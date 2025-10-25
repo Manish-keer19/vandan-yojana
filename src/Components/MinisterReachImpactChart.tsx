@@ -190,7 +190,7 @@ const MinisterReachImpactChart: React.FC = () => {
   const chartInstanceRef = useRef<ChartType | null>(null);
 
   // State for data rows - initialize with defaults; update via setDataRows for backend data
-  const [dataRows, setDataRows] = useState<DataRow[]>([
+  const [dataRows] = useState<DataRow[]>([
     { 
       sno: 1, 
       type: 'महिला लाभार्थी', 
@@ -209,7 +209,7 @@ const MinisterReachImpactChart: React.FC = () => {
   ]);
 
   // State for categories - initialize with defaults; update via setCategories if needed
-  const [categories, setCategories] = useState<Category[]>([
+  const [categories] = useState<Category[]>([
     { key: 'correctName', label: 'हा जानते हैं - सही नाम बताय', color: '#f97316' },
     { key: 'wrongName', label: 'हा - जानते हैं पर गलत नाम बताय', color: '#ec4899' },
     { key: 'notKnow', label: 'नही जानते', color: '#3b82f6' },
@@ -242,7 +242,7 @@ const MinisterReachImpactChart: React.FC = () => {
       acc.noResponse += row.counts.noResponse;
     }
     return acc;
-  }, { correctName: 0, wrongName: 0, notKnow: 0, noResponse: 0 } as Record<string, number>);
+  }, { correctName: 0, wrongName: 0, notKnow: 0, noResponse: 0 });
 
   const overallTotal = Object.values(totals).reduce((sum, val) => sum + val, 0);
 
@@ -260,7 +260,12 @@ const MinisterReachImpactChart: React.FC = () => {
       rowTotal = Object.values(row.counts).reduce((sum, val) => sum + val, 0);
     } else {
       // For total row, use grand totals
-      rowCounts = { ...totals };
+      rowCounts = { 
+        correctName: totals.correctName,
+        wrongName: totals.wrongName,
+        notKnow: totals.notKnow,
+        noResponse: totals.noResponse
+      };
       rowTotal = overallTotal;
     }
     return {

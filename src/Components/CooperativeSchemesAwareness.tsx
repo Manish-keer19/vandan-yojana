@@ -206,7 +206,7 @@ const CooperativeSchemesAwareness: React.FC = () => {
   const chartInstanceRef = useRef<ChartType | null>(null);
 
   // State for data rows - initialize with defaults; update via setDataRows for backend data
-  const [dataRows, setDataRows] = useState<DataRow[]>([
+  const [dataRows] = useState<DataRow[]>([
     { 
       sno: 1, 
       type: 'महिला लाभार्थी', 
@@ -225,7 +225,7 @@ const CooperativeSchemesAwareness: React.FC = () => {
   ]);
 
   // State for categories - initialize with defaults; update via setCategories if needed
-  const [categories, setCategories] = useState<Category[]>([
+  const [categories] = useState<Category[]>([
     { key: 'ad', label: 'अखबार/विज्ञापन से', color: '#98FB98' },
     { key: 'social', label: 'सोशल मीडिया से', color: '#FFD700' },
     { key: 'govt', label: 'सरकारी कर्मचारियों से ', color: '#9370DB' },
@@ -260,7 +260,7 @@ const CooperativeSchemesAwareness: React.FC = () => {
       acc.noinfo += row.counts.noinfo;
     }
     return acc;
-  }, { ad: 0, social: 0, govt: 0, family: 0, noinfo: 0 } as Record<string, number>);
+  }, { ad: 0, social: 0, govt: 0, family: 0, noinfo: 0 });
 
   const overallTotal = Object.values(totals).reduce((sum, val) => sum + val, 0);
 
@@ -278,7 +278,13 @@ const CooperativeSchemesAwareness: React.FC = () => {
       rowTotal = Object.values(row.counts).reduce((sum, val) => sum + val, 0);
     } else {
       // For total row, use grand totals
-      rowCounts = { ...totals };
+      rowCounts = { 
+        ad: totals.ad,
+        social: totals.social,
+        govt: totals.govt,
+        family: totals.family,
+        noinfo: totals.noinfo
+      };
       rowTotal = overallTotal;
     }
     return {

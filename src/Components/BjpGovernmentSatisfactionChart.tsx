@@ -33,7 +33,7 @@ const BjpGovernmentSatisfactionChart: React.FC = () => {
   const chartInstanceRef = useRef<ChartType | null>(null);
 
   // State for data rows - initialize with defaults; update via setDataRows for backend data
-  const [dataRows, setDataRows] = useState<DataRow[]>([
+  const [dataRows] = useState<DataRow[]>([
     { 
       sno: 1, 
       type: 'महिला लाभार्थी', 
@@ -52,7 +52,7 @@ const BjpGovernmentSatisfactionChart: React.FC = () => {
   ]);
 
   // State for categories - initialize with defaults; update via setCategories if needed
-  const [categories, setCategories] = useState<Category[]>([
+  const [categories] = useState<Category[]>([
     { key: 'verySatisfied', label: 'कुछ हद तक सींतुष्ट', color: '#10b981' },
     { key: 'fullySatisfied', label: 'पूरी तरह से संतुष्ट', color: '#f97316' },
     { key: 'veryDissatisfied', label: 'कुछ हद तक असंतुष्ट', color: '#eab308' },
@@ -85,7 +85,7 @@ const BjpGovernmentSatisfactionChart: React.FC = () => {
       acc.fullyDissatisfied += row.counts.fullyDissatisfied;
     }
     return acc;
-  }, { verySatisfied: 0, fullySatisfied: 0, veryDissatisfied: 0, fullyDissatisfied: 0 } as Record<string, number>);
+  }, { verySatisfied: 0, fullySatisfied: 0, veryDissatisfied: 0, fullyDissatisfied: 0 });
 
   const overallTotal = Object.values(totals).reduce((sum, val) => sum + val, 0);
 
@@ -103,7 +103,12 @@ const BjpGovernmentSatisfactionChart: React.FC = () => {
       rowTotal = Object.values(row.counts).reduce((sum, val) => sum + val, 0);
     } else {
       // For total row, use grand totals
-      rowCounts = { ...totals };
+      rowCounts = { 
+        verySatisfied: totals.verySatisfied,
+        fullySatisfied: totals.fullySatisfied,
+        veryDissatisfied: totals.veryDissatisfied,
+        fullyDissatisfied: totals.fullyDissatisfied
+      };
       rowTotal = overallTotal;
     }
     return {

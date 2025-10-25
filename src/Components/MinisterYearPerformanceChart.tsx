@@ -190,7 +190,7 @@ const MinisterYearPerformanceChart: React.FC = () => {
   const chartInstanceRef = useRef<ChartType | null>(null);
 
   // State for data rows - initialize with defaults; update via setDataRows for backend data
-  const [dataRows, setDataRows] = useState<DataRow[]>([
+  const [dataRows] = useState<DataRow[]>([
     { 
       sno: 1, 
       type: 'महिला लाभार्थी', 
@@ -209,7 +209,7 @@ const MinisterYearPerformanceChart: React.FC = () => {
   ]);
 
   // State for categories - initialize with defaults; update via setCategories if needed
-  const [categories, setCategories] = useState<Category[]>([
+  const [categories] = useState<Category[]>([
     { key: 'veryGood', label: 'बहुत अच्छा कार्य कर रहे हैं', color: '#f97316' },
     { key: 'good', label: 'अच्छा कार्य कर रहे हैं', color: '#ec4899' },
     { key: 'less', label: 'ख़राब कार्य कर रहे हे', color: '#3b82f6' },
@@ -242,7 +242,7 @@ const MinisterYearPerformanceChart: React.FC = () => {
       acc.noResponse += row.counts.noResponse;
     }
     return acc;
-  }, { veryGood: 0, good: 0, less: 0, noResponse: 0 } as Record<string, number>);
+  }, { veryGood: 0, good: 0, less: 0, noResponse: 0 });
 
   const overallTotal = Object.values(totals).reduce((sum, val) => sum + val, 0);
 
@@ -260,7 +260,12 @@ const MinisterYearPerformanceChart: React.FC = () => {
       rowTotal = Object.values(row.counts).reduce((sum, val) => sum + val, 0);
     } else {
       // For total row, use grand totals
-      rowCounts = { ...totals };
+      rowCounts = { 
+        veryGood: totals.veryGood,
+        good: totals.good,
+        less: totals.less,
+        noResponse: totals.noResponse
+      };
       rowTotal = overallTotal;
     }
     return {

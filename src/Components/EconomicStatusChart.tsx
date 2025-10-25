@@ -191,7 +191,7 @@ const EconomicStatusChart: React.FC = () => {
     const chartInstanceRef = useRef<ChartType | null>(null);
 
     // State for data rows - initialize with defaults; update via setDataRows for backend data
-    const [dataRows, setDataRows] = useState<DataRow[]>([
+    const [dataRows] = useState<DataRow[]>([
         {
             sno: 1,
             type: 'महिला लाभार्थी',
@@ -210,7 +210,7 @@ const EconomicStatusChart: React.FC = () => {
     ]);
 
     // State for categories - initialize with defaults; update via setCategories if needed
-    const [categories, setCategories] = useState<Category[]>([
+    const [categories] = useState<Category[]>([
         { key: 'improved', label: 'आर्थिक स्थिति सुधर गयी है', color: '#22c55e' },
         { key: 'same', label: 'आर्थिक स्थिति पहले जैसी ही है', color: '#f97316' },
         { key: 'somewhat', label: 'कुछ कह नहीं सकते', color: '#eab308' },
@@ -243,7 +243,7 @@ const EconomicStatusChart: React.FC = () => {
             acc.noResponse += row.counts.noResponse;
         }
         return acc;
-    }, { improved: 0, same: 0, somewhat: 0, noResponse: 0 } as Record<string, number>);
+    }, { improved: 0, same: 0, somewhat: 0, noResponse: 0 });
 
     const overallTotal = Object.values(totals).reduce((sum, val) => sum + val, 0);
 
